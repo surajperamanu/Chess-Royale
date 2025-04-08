@@ -1,0 +1,43 @@
+import React from 'react';
+import { ScrollText } from 'lucide-react';
+
+interface MoveHistoryProps {
+  moves: string[];
+}
+
+const MoveHistory: React.FC<MoveHistoryProps> = ({ moves = [] }) => {
+  const formatMoves = () => {
+    const formattedMoves = [];
+    for (let i = 0; i < moves.length; i += 2) {
+      const moveNumber = Math.floor(i / 2) + 1;
+      const whiteMove = moves[i] || '';
+      const blackMove = moves[i + 1] || '';
+      
+      formattedMoves.push({ moveNumber, whiteMove, blackMove });
+    }
+    return formattedMoves;
+  };
+
+  return (
+    <div className="bg-neutral-900 border border-amber-600/20 rounded-lg p-4 h-[300px] overflow-y-auto">
+      <div className="flex items-center gap-2 mb-4">
+        <ScrollText className="w-5 h-5 text-amber-400" />
+        <h3 className="text-amber-400 font-bold">Move History</h3>
+      </div>
+      <div className="space-y-2 text-neutral-400">
+        {formatMoves().map((move, index) => (
+          <div key={index} className="flex gap-4">
+            <span className="text-amber-600">{move.moveNumber}.</span>
+            <span>{move.whiteMove}</span>
+            <span>{move.blackMove}</span>
+          </div>
+        ))}
+        {moves.length === 0 && (
+          <div className="text-gray-500 italic">No moves yet</div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default MoveHistory;

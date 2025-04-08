@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-black text-white;
+}
+
+@keyframes glow {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.2)); }
+  50% { filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.4)); }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.style-piece {
+  -webkit-font-smoothing: antialiased;
+}
+
+.style-piece::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.15) 45%, rgba(255, 255, 255, 0.2) 50%, transparent 55%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
