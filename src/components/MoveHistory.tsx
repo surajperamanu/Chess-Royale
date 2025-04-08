@@ -3,9 +3,10 @@ import { ScrollText } from 'lucide-react';
 
 interface MoveHistoryProps {
   moves: string[];
+  onMoveSelect?: (moveIndex: number) => void;
 }
 
-const MoveHistory: React.FC<MoveHistoryProps> = ({ moves = [] }) => {
+const MoveHistory: React.FC<MoveHistoryProps> = ({ moves = [], onMoveSelect }) => {
   const formatMoves = () => {
     const formattedMoves = [];
     for (let i = 0; i < moves.length; i += 2) {
@@ -18,6 +19,12 @@ const MoveHistory: React.FC<MoveHistoryProps> = ({ moves = [] }) => {
     return formattedMoves;
   };
 
+  const handleMoveClick = (moveIndex: number) => {
+    if (onMoveSelect) {
+      onMoveSelect(moveIndex);
+    }
+  };
+
   return (
     <div className="bg-neutral-900 border border-amber-600/20 rounded-lg p-4 h-[300px] overflow-y-auto">
       <div className="flex items-center gap-2 mb-4">
@@ -28,8 +35,22 @@ const MoveHistory: React.FC<MoveHistoryProps> = ({ moves = [] }) => {
         {formatMoves().map((move, index) => (
           <div key={index} className="flex gap-4">
             <span className="text-amber-600">{move.moveNumber}.</span>
-            <span>{move.whiteMove}</span>
-            <span>{move.blackMove}</span>
+            {move.whiteMove && (
+              <span 
+                className="cursor-pointer hover:text-white transition-colors"
+                onClick={() => handleMoveClick(index * 2)}
+              >
+                {move.whiteMove}
+              </span>
+            )}
+            {move.blackMove && (
+              <span 
+                className="cursor-pointer hover:text-white transition-colors"
+                onClick={() => handleMoveClick(index * 2 + 1)}
+              >
+                {move.blackMove}
+              </span>
+            )}
           </div>
         ))}
         {moves.length === 0 && (

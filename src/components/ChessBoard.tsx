@@ -23,6 +23,7 @@ const PIECES = {
 
 interface ChessBoardProps {
   onMovesChange?: (moves: string[]) => void;
+  onPositionChange?: (fen: string) => void;
 }
 
 const getPieceCharacter = (piece: string): string => {
@@ -43,7 +44,7 @@ const getPieceCharacter = (piece: string): string => {
   return mapping[piece] || '';
 };
 
-const ChessBoard: React.FC<ChessBoardProps> = ({ onMovesChange }) => {
+const ChessBoard: React.FC<ChessBoardProps> = ({ onMovesChange, onPositionChange }) => {
   // Initialize chess.js instance
   const [game] = useState(new Chess());
   // Track board state, selected square, and valid moves
@@ -64,6 +65,13 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ onMovesChange }) => {
     // Notify parent component if callback provided
     if (onMovesChange) {
       onMovesChange(game.history());
+    }
+  };
+
+  // Notify parent component about position changes
+  const updatePosition = () => {
+    if (onPositionChange) {
+      onPositionChange(game.fen());
     }
   };
   
@@ -89,6 +97,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ onMovesChange }) => {
     setBoard(newBoard);
     updateGameStatus();
     updateMoveHistory();
+    updatePosition();
   };
   
   // Update game status (checkmate, check, etc.)
